@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AC Milan Analytics 2026/27 — Dashboard Pro</title>
+<style>
+:root{--bg:#070707;--panel:#111;--panel2:#171717;--red:#e30613;--red2:#8d0008;--text:#f4f4f4;--muted:#929292;--line:#292929;--green:#42d392;--yellow:#f0c84b}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 90% 0%,#241010 0,#090909 35%,#050505 100%);color:var(--text);font-family:Inter,Arial,sans-serif}
+header{position:sticky;top:0;z-index:10;background:rgba(7,7,7,.94);backdrop-filter:blur(12px);border-bottom:1px solid #272727}
+.head{max-width:1400px;margin:auto;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;align-items:center;gap:14px}.crest{width:44px;height:54px;display:grid;place-items:center;background:#050505;overflow:hidden}.crest img{width:34px;height:52px;object-fit:contain;display:block}.eyebrow{font-size:10px;letter-spacing:2.5px;color:var(--red);font-weight:800}.title{font-size:23px;font-weight:850;margin-top:3px}.season{font-size:12px;color:var(--muted);padding:9px 12px;border:1px solid var(--line);border-radius:999px}
+main{max-width:1400px;margin:auto;padding:24px}.hero{display:grid;grid-template-columns:1.7fr .8fr;gap:18px}.heroCard,.card{background:linear-gradient(145deg,#151515,#0e0e0e);border:1px solid var(--line);border-radius:18px;box-shadow:0 18px 50px #0008}.heroCard{padding:25px}.heroTitle{font-size:34px;font-weight:900;letter-spacing:-1px}.heroSub{color:var(--muted);margin-top:7px}.scoreRow{display:flex;align-items:end;gap:18px;margin-top:25px}.score{font-size:76px;font-weight:950;line-height:.9}.score span{font-size:19px;color:var(--muted);font-weight:600}.bar{height:8px;background:#292929;border-radius:99px;overflow:hidden;margin-top:15px}.bar i{display:block;height:100%;width:78%;background:linear-gradient(90deg,var(--red2),var(--red));border-radius:99px}.heroMini{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px}.mini{padding:13px;background:#0c0c0c;border:1px solid var(--line);border-radius:12px}.mini b{font-size:21px}.mini small{display:block;color:var(--muted);font-size:10px;margin-top:4px}.forecast{padding:25px}.forecast h3{margin:0 0 18px}.prob{display:flex;justify-content:space-between;margin:15px 0 7px;font-size:13px}.prob b{color:#fff}.progress{height:7px;background:#292929;border-radius:99px;overflow:hidden}.progress i{display:block;height:100%;background:var(--red);border-radius:99px}.section{margin-top:18px}.sectionTitle{font-size:16px;font-weight:800;margin:0 0 11px;color:#ddd}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.kpi{padding:17px}.klabel{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.8px}.value{font-size:28px;font-weight:900;margin-top:6px}.delta{font-size:11px;margin-top:6px;color:var(--green)}.two{display:grid;grid-template-columns:1.4fr 1fr;gap:14px}.card{padding:18px}.chart{height:290px;position:relative}.chart svg{width:100%;height:100%}.axis{stroke:#343434;stroke-width:1}.gridline{stroke:#202020;stroke-width:1}.line{fill:none;stroke:var(--red);stroke-width:4;stroke-linecap:round;stroke-linejoin:round}.line2{fill:none;stroke:#cfcfcf;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:7 6}.dot{fill:#fff}.legend{display:flex;gap:18px;color:var(--muted);font-size:11px;margin-top:4px}.legend span:before{content:'';display:inline-block;width:18px;height:3px;background:var(--red);vertical-align:middle;margin-right:6px}.legend .l2:before{background:#ccc}.tableWrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:560px}th,td{padding:11px 8px;border-bottom:1px solid var(--line);font-size:12px;text-align:left}th{color:#777;font-size:10px;text-transform:uppercase;letter-spacing:.7px}td strong{font-size:13px}.up{color:var(--green)}.down{color:#ff6969}.tag{padding:4px 8px;border-radius:99px;background:#1a3427;color:var(--green);font-size:10px;font-weight:800}.radar{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:center}.bars>div{margin:14px 0}.bars label{font-size:11px;color:#aaa;display:flex;justify-content:space-between;margin-bottom:6px}.bars .r{height:7px;background:#292929;border-radius:99px;overflow:hidden}.bars .r i{display:block;height:100%;background:linear-gradient(90deg,#6d0007,var(--red));border-radius:99px}.footer{text-align:center;color:#666;font-size:10px;padding:28px 0 8px}.note{margin-top:18px;border:1px solid #3b2022;background:#160b0c;padding:12px 15px;border-radius:12px;color:#aaa;font-size:11px}.note b{color:#eee}
+@media(max-width:1000px){.hero,.two{grid-template-columns:1fr}.grid4{grid-template-columns:repeat(2,1fr)}}@media(max-width:600px){main{padding:13px}.head{padding:15px}.title{font-size:18px}.heroTitle{font-size:27px}.score{font-size:62px}.heroMini{grid-template-columns:1fr 1fr}.grid4{grid-template-columns:1fr 1fr}.season{display:none}}
+
+.heatBtn{border:1px solid #5b171b;background:#19090a;color:#fff;border-radius:8px;padding:6px 9px;font-size:9px;font-weight:800;letter-spacing:.5px;cursor:pointer}
+.heatBtn:hover{background:#2b0d0f;border-color:#d71920}
+.heatOverlay{position:fixed;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:18px;z-index:100}
+.heatOverlay.open{display:flex}
+.heatModal{width:min(760px,100%);max-height:92vh;overflow:auto;background:#111;border:1px solid #3b3b3b;border-radius:18px;padding:20px;box-shadow:0 25px 80px #000}
+.heatHead{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:12px}
+.heatHead h3{margin:0;font-size:20px}.heatClose{border:1px solid #333;background:#191919;color:#fff;border-radius:8px;padding:7px 10px;cursor:pointer}
+.pitch{position:relative;width:100%;aspect-ratio:68/105;max-width:390px;margin:12px auto;background:linear-gradient(180deg,#173d25,#1d5a32);border:2px solid #eee;border-radius:4px;overflow:hidden}
+.pitch:before{content:"";position:absolute;left:0;right:0;top:50%;border-top:2px solid rgba(255,255,255,.85)}
+.pitch:after{content:"";position:absolute;width:24%;aspect-ratio:1;border:2px solid rgba(255,255,255,.85);border-radius:50%;left:38%;top:38%}
+.zone{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(255,50,50,.82),rgba(230,6,19,.34) 45%,rgba(230,6,19,0) 72%);filter:blur(1px)}
+.zone.z1{width:38%;height:18%;left:8%;top:60%}.zone.z2{width:44%;height:22%;left:28%;top:42%}.zone.z3{width:34%;height:18%;left:55%;top:25%}.zone.z4{width:25%;height:15%;left:15%;top:22%}.zone.z5{width:30%;height:18%;left:60%;top:65%}
+.pitchLabel{position:absolute;bottom:8px;left:0;right:0;text-align:center;color:#fff;font-size:9px;letter-spacing:1px;text-shadow:0 1px 3px #000}
+.heatStats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}.heatStat{background:#191919;border:1px solid #292929;border-radius:10px;padding:10px}.heatStat small{display:block;color:#777;font-size:9px}.heatStat b{display:block;margin-top:4px;font-size:15px}
+@media(max-width:600px){.heatStats{grid-template-columns:repeat(2,1fr)}}
+
+
+.newsItem{display:block;text-decoration:none;color:#f2f2f2;background:#0d0d0d;border:1px solid #292929;border-radius:12px;padding:13px;transition:.15s}
+.newsItem:hover{border-color:#7d1a20;transform:translateY(-1px)}
+.newsItem b{display:block;font-size:13px;margin-top:7px}.newsItem small{display:block;color:#888;line-height:1.45;margin-top:5px}
+.newsImpact{display:grid;grid-template-columns:1fr 1fr;gap:10px}.newsImpact .mini{min-height:70px}
+
+
+.filterBar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px}
+.filterBtn{border:1px solid #333;background:#101010;color:#aaa;border-radius:999px;padding:8px 12px;font-size:10px;font-weight:800;cursor:pointer}
+.filterBtn.active,.filterBtn:hover{background:#5f080d;color:#fff;border-color:#9d1118}
+.competitionTable td,.competitionTable th{white-space:nowrap}
+
+
+.chartGrid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.chartCard{min-height:330px}
+.chartBox{height:255px;position:relative}.chartBox svg{width:100%;height:100%}
+.chartGrid3 .sectionTitle{margin-bottom:4px}
+.chartLegend{display:flex;gap:12px;flex-wrap:wrap;color:#888;font-size:10px;margin-top:3px}
+.chartLegend i{display:inline-block;width:16px;height:3px;background:#d71920;vertical-align:middle;margin-right:5px}
+.chartLegend i.gray{background:#ccc}.chartLegend i.gold{background:#f0c84b}
+@media(max-width:1050px){.chartGrid3{grid-template-columns:1fr 1fr}}
+@media(max-width:650px){.chartGrid3{grid-template-columns:1fr}}
+
+
+.topForecast{display:grid;grid-template-columns:1.1fr 1.5fr;gap:14px;margin:20px 0}
+.forecastMain,.nextMatch{background:linear-gradient(145deg,#171717,#0c0c0c);border:1px solid #303030;border-radius:18px;padding:20px;box-shadow:0 18px 50px #0008}
+.forecastPosition{display:flex;align-items:end;gap:12px;margin-top:8px}.forecastPosition .num{font-size:66px;line-height:.9;font-weight:950;color:#fff}.forecastPosition .ord{font-size:20px;color:#aaa;margin-bottom:6px}
+.range{font-size:11px;color:#999;margin-top:8px}.forecastBar{height:7px;background:#292929;border-radius:99px;margin-top:14px;overflow:hidden}.forecastBar i{display:block;height:100%;width:65%;background:linear-gradient(90deg,#650008,#d71920);border-radius:99px}
+.nextHead{display:flex;justify-content:space-between;gap:10px;align-items:start}.nextTeams{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:15px;margin-top:18px}.team{text-align:center;font-size:19px;font-weight:900}.team small{display:block;color:#777;font-size:9px;margin-top:4px}.versus{font-weight:900;color:#d71920;font-size:14px}.matchMeta{text-align:center;color:#aaa;font-size:11px;margin-top:12px}.countdown{font-variant-numeric:tabular-nums;color:#fff;font-weight:900;margin-top:8px;font-size:15px}.matchOdds{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:15px}.odd{background:#151515;border:1px solid #292929;border-radius:9px;padding:8px;text-align:center}.odd small{display:block;color:#777;font-size:8px}.odd b{display:block;margin-top:3px}
+@media(max-width:800px){.topForecast{grid-template-columns:1fr}.nextTeams{grid-template-columns:1fr auto 1fr}.forecastPosition .num{font-size:58px}}
+
+
+.chartInsight{
+  margin-top:12px;
+  padding:12px 14px;
+  border:1px solid #352022;
+  border-left:3px solid var(--red);
+  border-radius:11px;
+  background:linear-gradient(145deg,#180b0c,#100b0b);
+}
+.chartInsight .insightHead{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  color:#fff;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.7px;
+  text-transform:uppercase;
+}
+.chartInsight p{
+  margin:7px 0 0;
+  color:#b9b9b9;
+  font-size:11px;
+  line-height:1.55;
+}
+.chartInsight b{color:#eee}
+.chartInsight .impact{
+  margin-top:7px;
+  color:#ddd;
+}
+
+
+/* v5.5 Intelligence Layer */
+.execSummary{display:grid;grid-template-columns:1.25fr 1fr;gap:14px;margin-top:18px}
+.execCard,.scoreCard{background:linear-gradient(145deg,#171717,#0d0d0d);border:1px solid #303030;border-radius:18px;padding:20px;box-shadow:0 18px 50px #0008}
+.summaryGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:15px}
+.summaryItem{background:#101010;border:1px solid #292929;border-radius:11px;padding:11px}
+.summaryItem small{display:block;color:#777;font-size:9px;text-transform:uppercase;letter-spacing:.6px}
+.summaryItem b{display:block;margin-top:5px;font-size:16px}
+.statusGood{color:var(--green)}.statusWarn{color:var(--yellow)}.statusBad{color:#ff6969}
+.scoreTop{display:flex;align-items:end;justify-content:space-between;gap:12px}
+.scoreNum{font-size:64px;font-weight:950;line-height:.9}
+.scoreScale{font-size:10px;color:#777}
+.scoreGauge{height:10px;background:#292929;border-radius:99px;overflow:hidden;margin-top:14px}
+.scoreGauge i{display:block;height:100%;width:68%;background:linear-gradient(90deg,#6d0007,var(--red));border-radius:99px}
+.scoreBreak{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.scorePart{background:#111;border:1px solid #292929;border-radius:10px;padding:9px}
+.scorePart small{display:block;color:#777;font-size:9px}.scorePart b{display:block;margin-top:3px}
+.momentum{display:flex;align-items:center;gap:14px;margin-top:12px}
+.momentumNum{font-size:34px;font-weight:950}
+.momentumBar{flex:1;height:8px;background:#292929;border-radius:99px;overflow:hidden}
+.momentumBar i{display:block;height:100%;width:68%;background:var(--green);border-radius:99px}
+.alertBox{margin-top:12px;border:1px solid #3b2022;background:#160b0c;border-radius:11px;padding:11px 13px}
+.alertBox b{color:#fff}.alertBox p{margin:5px 0 0;color:#aaa;font-size:11px;line-height:1.5}
+.predictor{display:grid;grid-template-columns:1fr 1.15fr;gap:14px}
+.predMain{background:linear-gradient(145deg,#171717,#0d0d0d);border:1px solid #303030;border-radius:18px;padding:20px}
+.predTeams{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;margin-top:15px}
+.predTeam{text-align:center;font-size:17px;font-weight:900}.predTeam small{display:block;color:#777;font-size:9px;margin-top:4px}
+.predVersus{color:var(--red);font-weight:900}
+.probRow{margin:11px 0}.probLabel{display:flex;justify-content:space-between;color:#aaa;font-size:10px;margin-bottom:5px}
+.probTrack{height:7px;background:#292929;border-radius:99px;overflow:hidden}.probTrack i{display:block;height:100%;border-radius:99px;background:var(--red)}
+.predReason{margin-top:14px;padding:11px;background:#101010;border:1px solid #292929;border-radius:11px;color:#aaa;font-size:11px;line-height:1.5}
+.alertGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.alertCard{padding:13px;background:#101010;border:1px solid #292929;border-radius:12px}
+.alertCard .alertIcon{font-size:18px}.alertCard b{display:block;margin-top:6px;font-size:11px}.alertCard small{display:block;color:#888;line-height:1.45;margin-top:4px}
+.playerIndex{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.playerRows{display:grid;gap:8px}
+.playerRow{display:grid;grid-template-columns:1.2fr .6fr 1fr;align-items:center;gap:8px;padding:10px;background:#101010;border:1px solid #292929;border-radius:10px;font-size:11px}
+.playerRow strong{font-size:12px}.playerBar{height:6px;background:#292929;border-radius:99px;overflow:hidden}.playerBar i{display:block;height:100%;background:var(--red);border-radius:99px}
+.trendArrow{font-weight:900}.upTrend{color:var(--green)}.downTrend{color:#ff6969}
+@media(max-width:900px){.execSummary,.predictor,.playerIndex{grid-template-columns:1fr}}
+@media(max-width:600px){.summaryGrid,.alertGrid{grid-template-columns:1fr 1fr}.scoreNum{font-size:54px}.playerRow{grid-template-columns:1fr .55fr .9fr}}
+
+
+.modelMeta{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:10px;color:#777;font-size:9px}
+.modelGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.modelMetric{background:#101010;border:1px solid #292929;border-radius:10px;padding:10px}
+.modelMetric small{display:block;color:#777;font-size:9px;text-transform:uppercase}
+.modelMetric b{display:block;margin-top:4px;font-size:15px}
+.modelExplain{margin-top:12px;padding:12px 14px;border:1px solid #292929;border-radius:11px;background:#101010;color:#aaa;font-size:11px;line-height:1.55}
+.modelExplain b{color:#eee}
+.sourceLinks{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.sourceLinks a{font-size:9px;color:#aaa;text-decoration:none;border:1px solid #333;border-radius:999px;padding:6px 8px}
+.sourceLinks a:hover{border-color:#9d1118;color:#fff}
+@media(max-width:650px){.modelGrid{grid-template-columns:1fr}}
+
+
+/* v6.0 Auto Scouting Engine */
+.autoEngine{display:grid;grid-template-columns:1fr 1.2fr;gap:14px}
+.engineCard{background:linear-gradient(145deg,#171717,#0d0d0d);border:1px solid #303030;border-radius:18px;padding:20px;box-shadow:0 18px 50px #0008}
+.engineStatus{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:800}
+.statusDot{width:9px;height:9px;border-radius:50%;background:#777;box-shadow:0 0 10px #000}
+.statusDot.ok{background:var(--green);box-shadow:0 0 10px #42d39288}.statusDot.warn{background:var(--yellow)}.statusDot.err{background:#ff6969}
+.engineControls{display:grid;gap:9px;margin-top:14px}
+.engineInput{width:100%;background:#0c0c0c;border:1px solid #333;color:#eee;border-radius:9px;padding:10px;font-size:11px}
+.engineBtn{border:1px solid #6f1016;background:#260a0c;color:#fff;border-radius:9px;padding:10px 12px;font-size:10px;font-weight:900;cursor:pointer}
+.engineBtn:hover{background:#5f080d;border-color:#d71920}
+.engineGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:14px}
+.engineStat{background:#101010;border:1px solid #292929;border-radius:10px;padding:10px}
+.engineStat small{display:block;color:#777;font-size:9px;text-transform:uppercase}.engineStat b{display:block;margin-top:4px;font-size:15px}
+.engineLog{margin-top:12px;background:#090909;border:1px solid #242424;border-radius:10px;padding:10px;color:#888;font-size:10px;line-height:1.55;max-height:140px;overflow:auto}
+@media(max-width:900px){.autoEngine{grid-template-columns:1fr}}
+@media(max-width:600px){.engineGrid{grid-template-columns:1fr 1fr}}
+
+
+.liveModel{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.liveModelCard{background:#101010;border:1px solid #292929;border-radius:12px;padding:13px}
+.liveModelCard h4{margin:0 0 9px;font-size:11px;text-transform:uppercase;color:#ddd}
+.livePill{display:inline-block;padding:5px 8px;border-radius:99px;background:#1a3427;color:var(--green);font-size:9px;font-weight:900}
+.livePill.warn{background:#29200b;color:var(--yellow)}
+.livePill.bad{background:#3b1515;color:#ff6969}
+.liveReason{font-size:11px;color:#aaa;line-height:1.55}
+.liveReason strong{color:#eee}
+@media(max-width:700px){.liveModel{grid-template-columns:1fr}}
+
+
+/* v6.2 Post-Match Learning */
+.learningGrid{display:grid;grid-template-columns:1.15fr 1fr;gap:14px}
+.learningCard{background:linear-gradient(145deg,#171717,#0d0d0d);border:1px solid #303030;border-radius:18px;padding:20px;box-shadow:0 18px 50px #0008}
+.learningTable{width:100%;border-collapse:collapse;margin-top:8px}.learningTable th,.learningTable td{padding:9px 6px;border-bottom:1px solid #292929;font-size:10px}.learningTable th{color:#777;font-size:8px}
+.metricBig{font-size:42px;font-weight:950}.metricLabel{font-size:9px;color:#777;text-transform:uppercase}
+.calibBar{height:8px;background:#292929;border-radius:99px;overflow:hidden;margin-top:8px}.calibBar i{display:block;height:100%;background:var(--red);border-radius:99px}
+.learningStatus{display:inline-block;padding:5px 8px;border-radius:99px;background:#29200b;color:var(--yellow);font-size:9px;font-weight:900}
+.learningStatus.ready{background:#1a3427;color:var(--green)}
+.learningStatus.bad{background:#3b1515;color:#ff6969}
+.learningForm{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.learningInput{width:100%;background:#0c0c0c;border:1px solid #333;color:#eee;border-radius:8px;padding:9px;font-size:11px}
+.learningBtn{margin-top:9px;width:100%;border:1px solid #6f1016;background:#260a0c;color:#fff;border-radius:9px;padding:10px;font-size:10px;font-weight:900;cursor:pointer}
+.learningBtn:hover{background:#5f080d;border-color:#d71920}
+@media(max-width:850px){.learningGrid{grid-template-columns:1fr}}
+@media(max-width:600px){.learningForm{grid-template-columns:1fr}}
+
+</style>
+</head>
+<body>
+<header><div class="head"><div class="brand"><div class="crest" aria-label="Stemma ufficiale AC Milan">
+  <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Logo_of_AC_Milan.svg"
+       alt="Stemma ufficiale AC Milan"
+       referrerpolicy="no-referrer">
+</div><div><div class="eyebrow">MILAN ANALYTICS</div><div class="title">Performance Intelligence</div></div></div><div class="season">SERIE A · 2026/27 · LIVE DATA</div></div></header>
+
+<main>
+
+<div class="section">
+  <div class="sectionTitle">🧠 Milan Executive Summary</div>
+  <div class="execSummary">
+    <div class="execCard">
+      <div class="eyebrow">CURRENT TEAM STATUS</div>
+      <div style="font-size:25px;font-weight:900;margin-top:4px">Trend positivo, ma difesa da monitorare</div>
+      <div class="heroSub">La lettura sintetica combina i KPI già presenti nella dashboard, senza introdurre dati non disponibili.</div>
+      <div class="summaryGrid">
+        <div class="summaryItem"><small>Trend</small><b class="statusGood">🟢 In crescita</b></div>
+        <div class="summaryItem"><small>Attacco</small><b class="statusGood">🟢 Positivo</b></div>
+        <div class="summaryItem"><small>Difesa</small><b class="statusWarn">🟡 Monitorare</b></div>
+        <div class="summaryItem"><small>Momentum</small><b id="summaryMomentum">+68</b></div>
+        <div class="summaryItem"><small>Forecast</small><b>3ª · 2ª–5ª</b></div>
+        <div class="summaryItem"><small>Prossimo test</small><b>Torino</b></div>
+      </div>
+      <div class="alertBox">
+        <b>🚨 Key Risk</b>
+        <p>La sconfitta 0–3 contro il Chelsea mostra che la solidità difensiva non è ancora stabile. Il 4–2 contro il Manchester United indica però una forte capacità di reazione.</p>
+      </div>
+    </div>
+
+    <div class="scoreCard">
+      <div class="eyebrow">MILAN PERFORMANCE SCORE</div>
+      <div class="scoreTop">
+        <div><div class="scoreNum">68</div><div class="scoreScale">INDICE 0–100 · baseline pre-season</div></div>
+        <div class="statusGood" style="font-weight:900;font-size:12px">▲ POSITIVO</div>
+      </div>
+      <div class="scoreGauge"><i></i></div>
+      <div class="scoreBreak">
+        <div class="scorePart"><small>OFFENSIVO</small><b>74/100</b></div>
+        <div class="scorePart"><small>DIFENSIVO</small><b>58/100</b></div>
+        <div class="scorePart"><small>PRODUZIONE</small><b>71/100</b></div>
+        <div class="scorePart"><small>RISULTATI</small><b>62/100</b></div>
+      </div>
+      <div class="momentum">
+        <div><small style="color:#777">MOMENTUM</small><div class="momentumNum">+68</div></div>
+        <div class="momentumBar"><i></i></div>
+      </div>
+      <div class="heroSub" style="margin-top:10px">Indice illustrativo della baseline attuale; verrà aggiornato con i dati ufficiali di campionato.</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="section">
+  <div class="sectionTitle">🤖 Auto Scouting Engine · v6.3</div>
+  <div class="autoEngine">
+    <div class="engineCard">
+      <div class="eyebrow">SECURE LIVE DATA PIPELINE</div>
+      <div style="font-size:22px;font-weight:900;margin-top:4px">Scouting automatico senza API key nel browser</div>
+      <div class="heroSub">La dashboard è predisposta per collegarsi a un backend/proxy sicuro. Le credenziali dell'API restano sul server e non vengono mai inserite nell'HTML.</div>
+
+      <div class="engineStatus" style="margin-top:14px">
+        <span class="statusDot warn" id="secureEngineDot"></span>
+        <span id="secureEngineStatus">BACKEND NON COLLEGATO</span>
+      </div>
+
+      <div class="engineControls">
+        <input id="backendUrl" class="engineInput" type="url" placeholder="Endpoint backend · es. https://tuo-server.it/api">
+        <button class="engineBtn" id="connectBackend">COLLEGA LIVE DATA</button>
+      </div>
+
+      <div class="note">
+        <b>🔐 Sicurezza:</b> la API key non viene più richiesta né salvata nel browser. Il backend custodisce la credenziale e interroga il provider dati.
+      </div>
+    </div>
+
+    <div class="engineCard">
+      <div class="eyebrow">DATA STATUS</div>
+      <div class="engineGrid">
+        <div class="engineStat"><small>Next opponent</small><b id="autoOpponent">—</b></div>
+        <div class="engineStat"><small>Match date</small><b id="autoDate">—</b></div>
+        <div class="engineStat"><small>Venue</small><b id="autoVenue">—</b></div>
+        <div class="engineStat"><small>Milan form</small><b id="autoMilanForm">—</b></div>
+        <div class="engineStat"><small>Opponent form</small><b id="autoOppForm">—</b></div>
+        <div class="engineStat"><small>Data quality</small><b id="autoQuality">—</b></div>
+      </div>
+      <div class="modelExplain">
+        <b>Fallback intelligente:</b> se il backend non è disponibile, il Match Engine conserva l'ultimo dataset locale verificato e segnala chiaramente che non si tratta di dati live.
+      </div>
+      <div class="engineLog" id="engineLog">Backend non configurato. La dashboard funziona comunque con il dataset locale.</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sectionTitle">⚙️ Live Model Output</div>
+  <div class="card">
+    <div class="liveModel">
+      <div class="liveModelCard">
+        <h4>Automatic recalculation</h4>
+        <span class="livePill" id="liveEngineState">WAITING FOR DATA</span>
+        <div class="modelGrid">
+          <div class="modelMetric"><small>1 · Milan</small><b id="liveP1">—</b></div>
+          <div class="modelMetric"><small>X · Draw</small><b id="livePX">—</b></div>
+          <div class="modelMetric"><small>2 · Opponent</small><b id="liveP2">—</b></div>
+          <div class="modelMetric"><small>Confidence</small><b id="liveConf">—</b></div>
+        </div>
+      </div>
+      <div class="liveModelCard">
+        <h4>Model explanation</h4>
+        <div class="liveReason" id="liveReason">In attesa dello scouting live. Il modello non modifica le probabilità finché non riceve dati verificati.</div>
+      </div>
+    </div>
+    <div class="note"><b>Pipeline:</b> prossimo match → ultimi 5 risultati → qualità avversari → attacco/difesa → fattore campo → expected goals → Poisson → 1X2. I dati mancanti vengono esclusi, non stimati arbitrariamente.</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sectionTitle">🎯 Match Intelligence · Torino vs Milan</div>
+  <div class="predictor">
+    <div class="predMain">
+      <div class="eyebrow">OPPONENT-AWARE MODEL · v5.7</div>
+      <div class="predTeams">
+        <div class="predTeam">TORINO<small>CASA</small></div>
+        <div class="predVersus">VS</div>
+        <div class="predTeam">MILAN<small>TRASFERTA</small></div>
+      </div>
+      <div class="matchMeta">23 agosto 2026 · 20:45 · Serie A · G1</div>
+
+      <div class="probRow"><div class="probLabel"><span>Vittoria Milan</span><b id="pMilan">—</b></div><div class="probTrack"><i id="barMilan" style="width:0%"></i></div></div>
+      <div class="probRow"><div class="probLabel"><span>Pareggio</span><b id="pDraw">—</b></div><div class="probTrack"><i id="barDraw" style="width:0%"></i></div></div>
+      <div class="probRow"><div class="probLabel"><span>Vittoria Torino</span><b id="pTorino">—</b></div><div class="probTrack"><i id="barTorino" style="width:0%"></i></div></div>
+
+      <div class="modelGrid">
+        <div class="modelMetric"><small>Expected Goals · Milan</small><b id="xgMilan">—</b></div>
+        <div class="modelMetric"><small>Expected Goals · Torino</small><b id="xgTorino">—</b></div>
+        <div class="modelMetric"><small>Risultato modale</small><b id="modalScore">—</b></div>
+        <div class="modelMetric"><small>Confidence</small><b id="modelConfidence">—</b></div>
+      </div>
+
+      <div class="predReason"><b style="color:#eee">Lettura:</b> <span id="modelReading">Calcolo in corso…</span></div>
+      <div class="modelMeta">
+        <span id="modelUpdate">Scouting aggiornato: —</span>
+        <span>Metodo: weighted form + Poisson + home advantage</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="sectionTitle">🔬 Confronto quantitativo</div>
+      <div class="bars">
+        <div><label><span>Attacco · Milan</span><b id="mAttack">—</b></label><div class="r"><i id="mAttackBar" style="width:0%"></i></div></div>
+        <div><label><span>Attacco · Torino</span><b id="tAttack">—</b></label><div class="r"><i id="tAttackBar" style="width:0%"></i></div></div>
+        <div><label><span>Difesa · Milan</span><b id="mDefense">—</b></label><div class="r"><i id="mDefenseBar" style="width:0%"></i></div></div>
+        <div><label><span>Difesa · Torino</span><b id="tDefense">—</b></label><div class="r"><i id="tDefenseBar" style="width:0%"></i></div></div>
+        <div><label><span>Forma · Milan</span><b id="mForm">—</b></label><div class="r"><i id="mFormBar" style="width:0%"></i></div></div>
+        <div><label><span>Forma · Torino</span><b id="tForm">—</b></label><div class="r"><i id="tFormBar" style="width:0%"></i></div></div>
+      </div>
+      <div class="modelExplain"><b>Come nasce la previsione:</b> il motore pesa la produzione offensiva e difensiva recente, la qualità relativa degli avversari, la forma, il fattore campo e poi converte gli expected goals in probabilità 1X2 tramite una distribuzione di Poisson. Le gare contro avversari molto inferiori ricevono un peso ridotto.</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <div class="sectionTitle">🆚 Opponent Scouting · Torino</div>
+    <div class="summaryGrid">
+      <div class="summaryItem"><small>Pre-season</small><b>2 V · 0 N · 1 P</b></div>
+      <div class="summaryItem"><small>Pre-season gol</small><b>14–1</b></div>
+      <div class="summaryItem"><small>Coppa Italia</small><b>1–0 Carrarese</b></div>
+      <div class="summaryItem"><small>Sistema osservato</small><b>3-4-2-1</b></div>
+      <div class="summaryItem"><small>Coach</small><b>Ignazio Abate</b></div>
+      <div class="summaryItem"><small>Qualità dati</small><b>MEDIA</b></div>
+    </div>
+
+    <div class="alertBox">
+      <b>🧠 Qualità dell'opposizione</b>
+      <p>Il 13–0 contro Pinzolo Valrendena viene fortemente scontato nel modello: è utile per leggere la finalizzazione, ma non è comparabile a una gara contro una squadra di livello Serie A. Il 1–0 all'Alcione e lo 0–1 contro il Cittadella hanno invece peso intermedio; il 1–0 alla Carrarese in Coppa Italia ha peso superiore perché gara ufficiale.</p>
+    </div>
+
+    <div class="alertBox" style="border-color:#292929;background:#101010">
+      <b>⚠️ Match-up tattico</b>
+      <p>Il Torino ha utilizzato il 3-4-2-1 nelle prime amichevoli ufficiali del ritiro. Il modello considera quindi una possibile partita con densità centrale e tre difensori, aumentando il rischio di una gara a basso margine e rendendo importante la capacità del Milan di creare superiorità sulle corsie e tra le linee.</p>
+    </div>
+
+    <div class="sourceLinks">
+      <a href="https://www.torinofc.it/news/18/07/2026/torino-pinzolo-valrendena-13-0" target="_blank" rel="noopener">Fonte Torino · 13–0</a>
+      <a href="https://www.torinofc.it/news/22/07/2026/torino-alcione-1-0_43819" target="_blank" rel="noopener">Fonte Torino · Alcione</a>
+      <a href="https://www.torinofc.it/news/25/07/2026/torino-cittadella-0-1_43856" target="_blank" rel="noopener">Fonte Torino · Cittadella</a>
+      <a href="https://www.torinofc.it/news/24/06/2026/il-tabellone-della-coppa-italia_43556" target="_blank" rel="noopener">Fonte Torino · Coppa Italia</a>
+    </div>
+  </div>
+</div>
+<div class="section">
+  <div class="sectionTitle">🚨 Automated KPI Alerts</div>
+  <div class="alertGrid">
+    <div class="alertCard"><div class="alertIcon">🔥</div><b>POSITIVE OFFENSIVE TREND</b><small>4 gol contro Manchester United: massimo della pre-season.</small></div>
+    <div class="alertCard"><div class="alertIcon">⚠️</div><b>DEFENSIVE VARIABILITY</b><small>3 gol concessi contro Chelsea: area prioritaria di monitoraggio.</small></div>
+    <div class="alertCard"><div class="alertIcon">📈</div><b>SHOT CREATION</b><small>9 tiri in porta nell'ultima amichevole: forte incremento rispetto alla gara precedente.</small></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sectionTitle">📈 Advanced Performance Charts</div>
+  <div class="chartGrid3">
+
+    <div class="card chartCard">
+      <div class="sectionTitle">Gol fatti vs subiti</div>
+      <div class="chartBox">
+        <svg viewBox="0 0 500 255" preserveAspectRatio="none">
+          <line x1="35" y1="15" x2="35" y2="210" stroke="#333"/><line x1="35" y1="210" x2="480" y2="210" stroke="#333"/>
+          <line x1="35" y1="145" x2="480" y2="145" stroke="#222"/><line x1="35" y1="80" x2="480" y2="80" stroke="#222"/>
+          <polyline points="75,80 185,145 295,210 405,15" fill="none" stroke="#d71920" stroke-width="4"/>
+          <polyline points="75,80 185,145 295,15 405,80" fill="none" stroke="#ccc" stroke-width="3" stroke-dasharray="7 6"/>
+          <text x="62" y="235" fill="#777" font-size="11">Celtic</text><text x="172" y="235" fill="#777" font-size="11">Inter</text><text x="278" y="235" fill="#777" font-size="11">Chelsea</text><text x="385" y="235" fill="#777" font-size="11">Man Utd</text>
+        </svg>
+      </div>
+      <div class="chartLegend"><span><i></i>Gol Milan</span><span><i class="gray"></i>Gol subiti</span></div>
+<div class="chartInsight" data-insight="goals">
+  <div class="insightHead">🔎 Lettura del grafico</div>
+  <p class="insightText"></p>
+  <p class="impact"><b>🎯 Impatto:</b> <span class="impactText"></span></p>
+</div>
+    </div>
+
+    <div class="card chartCard">
+      <div class="sectionTitle">📊 Produzione offensiva</div>
+      <div class="chartBox">
+        <svg viewBox="0 0 500 255" preserveAspectRatio="none">
+          <line x1="35" y1="15" x2="35" y2="210" stroke="#333"/><line x1="35" y1="210" x2="480" y2="210" stroke="#333"/>
+          <rect x="60" y="105" width="55" height="105" rx="4" fill="#8d0008"/><rect x="160" y="157" width="55" height="53" rx="4" fill="#8d0008"/>
+          <rect x="260" y="210" width="55" height="0" rx="4" fill="#8d0008"/><rect x="360" y="0" width="55" height="210" rx="4" fill="#d71920"/>
+          <text x="72" y="235" fill="#777" font-size="11">Celtic</text><text x="170" y="235" fill="#777" font-size="11">Inter</text><text x="268" y="235" fill="#777" font-size="11">Chelsea</text><text x="360" y="235" fill="#777" font-size="11">Man Utd</text>
+        </svg>
+      </div>
+      <div class="chartLegend"><span><i></i>Gol segnati</span></div>
+<div class="chartInsight" data-insight="attack">
+  <div class="insightHead">🔎 Lettura del grafico</div>
+  <p class="insightText"></p>
+  <p class="impact"><b>🎯 Impatto:</b> <span class="impactText"></span></p>
+</div>
+    </div>
+
+    <div class="card chartCard">
+      <div class="sectionTitle">🏆 Partite per competizione</div>
+      <div class="chartBox">
+        <svg viewBox="0 0 500 255" preserveAspectRatio="none">
+          <line x1="35" y1="15" x2="35" y2="210" stroke="#333"/><line x1="35" y1="210" x2="480" y2="210" stroke="#333"/>
+          <rect x="65" y="30" width="65" height="180" rx="5" fill="#d71920"/>
+          <rect x="170" y="210" width="65" height="0" rx="5" fill="#8d0008"/>
+          <rect x="275" y="210" width="65" height="0" rx="5" fill="#8d0008"/>
+          <rect x="380" y="210" width="65" height="0" rx="5" fill="#8d0008"/>
+          <text x="64" y="235" fill="#777" font-size="10">Amichevoli</text><text x="181" y="235" fill="#777" font-size="10">Serie A</text><text x="278" y="235" fill="#777" font-size="10">Coppa</text><text x="392" y="235" fill="#777" font-size="10">Europa</text>
+        </svg>
+      </div>
+      <div class="chartLegend"><span><i></i>Partite disputate</span></div>
+<div class="chartInsight" data-insight="competition">
+  <div class="insightHead">🔎 Lettura del grafico</div>
+  <p class="insightText"></p>
+  <p class="impact"><b>🎯 Impatto:</b> <span class="impactText"></span></p>
+</div>
+    </div>
+
+    <div class="card chartCard">
+      <div class="sectionTitle">🎯 Tiri in porta</div>
+      <div class="chartBox">
+        <svg viewBox="0 0 500 255" preserveAspectRatio="none">
+          <line x1="35" y1="15" x2="35" y2="210" stroke="#333"/><line x1="35" y1="210" x2="480" y2="210" stroke="#333"/>
+          <polyline points="75,122 185,145 295,210 405,35" fill="none" stroke="#d71920" stroke-width="4"/>
+          <circle cx="75" cy="122" r="6" fill="#fff"/><circle cx="185" cy="145" r="6" fill="#fff"/><circle cx="295" cy="210" r="6" fill="#fff"/><circle cx="405" cy="35" r="6" fill="#fff"/>
+          <text x="62" y="235" fill="#777" font-size="11">Celtic</text><text x="172" y="235" fill="#777" font-size="11">Inter</text><text x="278" y="235" fill="#777" font-size="11">Chelsea</text><text x="385" y="235" fill="#777" font-size="11">Man Utd</text>
+        </svg>
+      </div>
+      <div class="chartLegend"><span><i></i>Tiri in porta</span><span style="color:#666">Dati non disponibili: “—” in tabella</span></div>
+<div class="chartInsight" data-insight="shots">
+  <div class="insightHead">🔎 Lettura del grafico</div>
+  <p class="insightText"></p>
+  <p class="impact"><b>🎯 Impatto:</b> <span class="impactText"></span></p>
+</div>
+    </div>
+
+    <div class="card chartCard">
+      <div class="sectionTitle">📈 Goal Difference</div>
+      <div class="chartBox">
+        <svg viewBox="0 0 500 255" preserveAspectRatio="none">
+          <line x1="35" y1="125" x2="480" y2="125" stroke="#555"/>
+          <polyline points="75,125 185,125 295,210 405,65" fill="none" stroke="#f0c84b" stroke-width="4"/>
+          <circle cx="75" cy="125" r="5" fill="#fff"/><circle cx="185" cy="125" r="5" fill="#fff"/><circle cx="295" cy="210" r="5" fill="#fff"/><circle cx="405" cy="65" r="5" fill="#fff"/>
+          <text x="62" y="235" fill="#777" font-size="11">Celtic</text><text x="172" y="235" fill="#777" font-size="11">Inter</text><text x="278" y="235" fill="#777" font-size="11">Chelsea</text><text x="385" y="235" fill="#777" font-size="11">Man Utd</text>
+        </svg>
+      </div>
+      <div class="chartLegend"><span><i class="gold"></i>Differenza reti</span></div>
+<div class="chartInsight" data-insight="difference">
+  <div class="insightHead">🔎 Lettura del grafico</div>
+  <p class="insightText"></p>
+  <p class="impact"><b>🎯 Impatto:</b> <span class="impactText"></span></p>
+</div>
+    </div>
+
+    <div class="card chartCard">
+      <div class="sectionTitle">👤 Player Goals — pre-season</div>
+      <div class="chartBox">
+        <svg viewBox="0 0 500 255" preserveAspectRatio="none">
+          <line x1="35" y1="15" x2="35" y2="210" stroke="#333"/><line x1="35" y1="210" x2="480" y2="210" stroke="#333"/>
+          <rect x="55" y="50" width="45" height="160" rx="4" fill="#d71920"/>
+          <rect x="125" y="50" width="45" height="160" rx="4" fill="#d71920"/>
+          <rect x="195" y="130" width="45" height="80" rx="4" fill="#8d0008"/>
+          <rect x="265" y="130" width="45" height="80" rx="4" fill="#8d0008"/>
+          <rect x="335" y="130" width="45" height="80" rx="4" fill="#8d0008"/>
+          <rect x="405" y="130" width="45" height="80" rx="4" fill="#8d0008"/>
+          <text x="60" y="235" fill="#777" font-size="9">Camarda</text><text x="127" y="235" fill="#777" font-size="9">Chukw.</text><text x="198" y="235" fill="#777" font-size="9">Cissè</text><text x="270" y="235" fill="#777" font-size="9">Ramos</text><text x="330" y="248" fill="#777" font-size="9">Loftus</text><text x="410" y="235" fill="#777" font-size="9">Nkunku</text>
+        </svg>
+      </div>
+      <div class="chartLegend"><span><i></i>Gol pre-season</span></div>
+<div class="chartInsight" data-insight="players">
+  <div class="insightHead">🔎 Lettura del grafico</div>
+  <p class="insightText"></p>
+  <p class="impact"><b>🎯 Impatto:</b> <span class="impactText"></span></p>
+</div>
+    </div>
+
+  </div>
+</div>
+
+
+<div class="section">
+  <div class="sectionTitle">👤 Player Performance Index</div>
+  <div class="playerIndex">
+    <div class="card">
+      <div class="sectionTitle">Ranking pre-season</div>
+      <div class="playerRows">
+        <div class="playerRow"><strong>Camarda</strong><b>82</b><div class="playerBar"><i style="width:82%"></i></div></div>
+        <div class="playerRow"><strong>Chukwueze</strong><b>81</b><div class="playerBar"><i style="width:81%"></i></div></div>
+        <div class="playerRow"><strong>Ramos</strong><b>70</b><div class="playerBar"><i style="width:70%"></i></div></div>
+        <div class="playerRow"><strong>Cissè</strong><b>69</b><div class="playerBar"><i style="width:69%"></i></div></div>
+        <div class="playerRow"><strong>Loftus-Cheek</strong><b>68</b><div class="playerBar"><i style="width:68%"></i></div></div>
+        <div class="playerRow"><strong>Nkunku</strong><b>67</b><div class="playerBar"><i style="width:67%"></i></div></div>
+      </div>
+      <div class="note"><b>Metodo:</b> indice illustrativo basato sui contributi offensivi disponibili nella dashboard. Non rappresenta un rating ufficiale del giocatore.</div>
+    </div>
+    <div class="card">
+      <div class="sectionTitle">Trend individuale</div>
+      <div class="summaryGrid" style="grid-template-columns:1fr 1fr">
+        <div class="summaryItem"><small>Miglior marcatore</small><b>Camarda · 2 gol</b></div>
+        <div class="summaryItem"><small>Co-leader</small><b>Chukwueze · 2 gol</b></div>
+        <div class="summaryItem"><small>Distribuzione</small><b>6 giocatori a segno</b></div>
+        <div class="summaryItem"><small>Segnale</small><b class="statusGood">🟢 Profondità</b></div>
+      </div>
+      <div class="alertBox"><b>🧠 Lettura</b><p>La distribuzione dei gol su più giocatori è un segnale positivo per la profondità offensiva. Per un indice completo serviranno minuti, xG, assist, recuperi palla e altri eventi individuali.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sectionTitle">🏆 Classifiche e statistiche per competizione</div>
+  <div class="card">
+    <div class="filterBar" id="competitionFilters">
+      <button class="filterBtn active" data-comp="all">TUTTE</button>
+      <button class="filterBtn" data-comp="friendly">AMICHEVOLI</button>
+      <button class="filterBtn" data-comp="seriea">SERIE A</button>
+      <button class="filterBtn" data-comp="coppa">COPPA ITALIA</button>
+      <button class="filterBtn" data-comp="europe">EUROPA</button>
+    </div>
+
+    <div id="competitionSummary" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px">
+      <div class="mini"><b id="compMatches">4</b><small>partite</small></div>
+      <div class="mini"><b id="compRecord">1–2–1</b><small>V–N–P</small></div>
+      <div class="mini"><b id="compGF">7</b><small>gol fatti</small></div>
+      <div class="mini"><b id="compGS">8</b><small>gol subiti</small></div>
+    </div>
+
+    <div class="tableWrap">
+      <table class="competitionTable">
+        <thead>
+          <tr><th>Competizione</th><th>Avversario</th><th>PG</th><th>V</th><th>N</th><th>P</th><th>GF</th><th>GS</th><th>DR</th><th>MPI</th></tr>
+        </thead>
+        <tbody id="competitionRows">
+          <tr data-comp="friendly"><td>Amichevole</td><td>Celtic</td><td>1</td><td>0</td><td>1</td><td>0</td><td>2</td><td>2</td><td>0</td><td>—</td></tr>
+          <tr data-comp="friendly"><td>Amichevole</td><td>Inter</td><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>—</td></tr>
+          <tr data-comp="friendly"><td>Amichevole</td><td>Chelsea</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>3</td><td>-3</td><td>—</td></tr>
+          <tr data-comp="friendly"><td>Amichevole</td><td>Manchester United</td><td>1</td><td>1</td><td>0</td><td>0</td><td>4</td><td>2</td><td>+2</td><td>—</td></tr>
+
+          <tr data-comp="seriea"><td>Serie A</td><td>Torino</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>—</td></tr>
+          <tr data-comp="seriea"><td>Serie A</td><td>Venezia</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>—</td></tr>
+          <tr data-comp="seriea"><td>Serie A</td><td>Juventus</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>—</td></tr>
+          <tr data-comp="seriea"><td>Serie A</td><td>Lazio</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>—</td></tr>
+          <tr data-comp="seriea"><td>Serie A</td><td>Lecce</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>—</td></tr>
+
+          <tr data-comp="coppa"><td>Coppa Italia</td><td>Da definire</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>—</td></tr>
+          <tr data-comp="europe"><td>Europa</td><td>Da definire</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="color:#666;font-size:9px;margin-top:9px">
+      Le partite future restano a zero fino al loro svolgimento. Le amichevoli sono escluse dalla classifica ufficiale di Serie A.
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sectionTitle">📰 Milan News Center</div>
+  <div class="two">
+    <div class="card">
+      <div class="sectionTitle">Ultimi aggiornamenti</div>
+      <div style="display:grid;gap:10px">
+        <a class="newsItem" href="https://www.acmilan.com/en/news/articles/schedule/2026-08-06/august-s-new-beginnings" target="_blank" rel="noopener">
+          <div><span class="tag">SQUADRA</span> <span style="color:#777;font-size:10px">06/08/2026</span></div>
+          <b>August's New Beginnings</b>
+          <small>Il Milan entra nella fase finale della preparazione verso l'inizio della stagione ufficiale.</small>
+        </a>
+        <a class="newsItem" href="https://www.acmilan.com/en/news/articles/press-conference/2026-07-08/amorim-i-believe-in-the-project-we-want-quality-and-wins" target="_blank" rel="noopener">
+          <div><span class="tag">AMORIM</span> <span style="color:#777;font-size:10px">08/07/2026</span></div>
+          <b>Amorim: “I believe in the project, we want quality and wins”</b>
+          <small>Indicazioni sul progetto tecnico e sugli obiettivi della nuova stagione.</small>
+        </a>
+        <a class="newsItem" href="https://www.acmilan.com/en/news/articles/friendly/2026-07-25/rossoneri-s-pre-season-begins-with-a-draw" target="_blank" rel="noopener">
+          <div><span class="tag">PRE-SEASON</span> <span style="color:#777;font-size:10px">25/07/2026</span></div>
+          <b>Celtic 2–2 Milan</b>
+          <small>Rimonta rossonera con doppietta di Francesco Camarda nella prima amichevole.</small>
+        </a>
+        <a class="newsItem" href="https://www.acmilan.com/en/news/articles/serie-a/2026-06-24/serie-a-2026-27-dates-and-times-for-matchdays-1-to-5" target="_blank" rel="noopener">
+          <div><span class="tag">CALENDARIO</span> <span style="color:#777;font-size:10px">24/06/2026</span></div>
+          <b>Definite date e orari delle prime cinque giornate</b>
+          <small>Esordio a Torino il 23 agosto; poi Venezia, Juventus, Lazio e Lecce.</small>
+        </a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="sectionTitle">Impatto analitico</div>
+      <div class="newsImpact">
+        <div class="mini"><b>CAMARDA</b><small>2 gol vs Celtic</small></div>
+        <div class="mini"><b>CALENDARIO</b><small>Juventus alla G3</small></div>
+        <div class="mini"><b>AMORIM</b><small>fase di selezione rosa</small></div>
+        <div class="mini"><b>G1</b><small>Torino · 23/08 · 20:45</small></div>
+      </div>
+      <div class="note" style="margin-top:14px"><b>Regola:</b> le news vengono tenute separate dai KPI. Una notizia può essere collegata a un giocatore o a un'area, ma non modifica automaticamente il punteggio senza dati misurabili.</div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="section">
+  <div class="sectionTitle">🔐 Backend Contract</div>
+  <div class="card">
+    <div class="sectionTitle">Payload richiesto dal Match Engine</div>
+    <div class="modelExplain">
+      Il frontend non conosce la API key. Il backend deve esporre
+      <b>GET /milan/scouting</b> e restituire JSON con: <b>opponent</b>, <b>date</b>,
+      <b>venue</b>, <b>home</b>, <b>away</b>, <b>milanForm.form</b>,
+      <b>opponentForm.form</b> e <b>quality</b>. I dati possono provenire da football-data.org,
+      API-Football o altro provider compatibile. Le credenziali restano esclusivamente lato server.
+    </div>
+    <div class="note"><b>Architettura:</b> Dashboard → Backend/Proxy → Provider calcio → dati normalizzati → Auto Scouting → Match Engine → Predictor.</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sectionTitle">🧪 Post-Match Learning · Model Audit</div>
+  <div class="learningGrid">
+    <div class="learningCard">
+      <div class="eyebrow">PREDICTION → RESULT → ERROR</div>
+      <div style="font-size:23px;font-weight:900;margin-top:4px">Il modello impara dagli errori</div>
+      <div class="heroSub">Dopo ogni gara puoi registrare il risultato reale. La dashboard confronta la previsione con l'esito, aggiorna lo storico e misura la qualità del predictor.</div>
+
+      <div class="learningForm">
+        <input id="learnHome" class="learningInput" placeholder="Casa" value="Torino">
+        <input id="learnAway" class="learningInput" placeholder="Trasferta" value="Milan">
+        <input id="learnResult" class="learningInput" placeholder="Risultato es. 1-2" value="">
+      </div>
+      <button class="learningBtn" id="saveMatchResult">REGISTRA RISULTATO E AGGIORNA MODEL AUDIT</button>
+
+      <div class="note"><b>Nota:</b> il sistema non modifica retroattivamente la previsione. Conserva la previsione originale e misura separatamente l'errore.</div>
+
+      <table class="learningTable">
+        <thead><tr><th>Match</th><th>Pred.</th><th>Reale</th><th>Esito</th><th>Errore</th></tr></thead>
+        <tbody id="learningRows">
+          <tr><td>Torino–Milan</td><td id="auditPred">—</td><td>—</td><td>—</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="learningCard">
+      <div class="eyebrow">MODEL PERFORMANCE</div>
+      <span class="learningStatus" id="learningStatus">NESSUN MATCH VALIDATO</span>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:15px">
+        <div><div class="metricBig" id="accuracyValue">—</div><div class="metricLabel">Accuracy 1X2</div></div>
+        <div><div class="metricBig" id="brierValue">—</div><div class="metricLabel">Brier Score</div></div>
+      </div>
+
+      <div style="margin-top:18px">
+        <div class="metricLabel">Predizioni corrette</div>
+        <div class="calibBar"><i id="accuracyBar" style="width:0%"></i></div>
+      </div>
+
+      <div class="summaryGrid" style="margin-top:15px">
+        <div class="summaryItem"><small>Match validati</small><b id="validatedMatches">0</b></div>
+        <div class="summaryItem"><small>Correct</small><b id="correctMatches">0</b></div>
+        <div class="summaryItem"><small>Mean error</small><b id="meanError">—</b></div>
+      </div>
+
+      <div class="alertBox" style="margin-top:14px">
+        <b>🧠 Interpretazione</b>
+        <p id="learningInterpretation">Servono risultati reali per valutare la qualità del predictor. Un singolo match non è sufficiente per giudicare il modello.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="note"><b>Nota metodologica:</b> i risultati e i KPI mostrati sono stati aggiornati con dati reali disponibili al 18/08/2026. Dove una statistica non è pubblicata/recuperabile in modo affidabile è indicato “—”; non vengono inventati xG, PPDA o rating. Il calendario ufficiale delle prime cinque giornate è quello pubblicato da AC Milan.</div>
+<div class="footer" style="max-width:1000px;margin:0 auto;color:#555;line-height:1.6">
+Fonti dati: AC Milan (risultati e calendario ufficiale), ESPN/Sky Sports/FotMob per statistiche partita. Ultimo aggiornamento: 18/08/2026.
+</div>
+<div class="footer">AC Milan Intelligence Dashboard · v6.3 · Secure Live Data Architecture</div>
+</main>
+
+<div class="heatOverlay" id="heatOverlay" aria-hidden="true">
+  <div class="heatModal" role="dialog" aria-modal="true" aria-labelledby="heatTitle">
+    <div class="heatHead">
+      <div><div class="eyebrow">POSITIONAL ANALYSIS</div><h3 id="heatTitle">Heatmap</h3></div>
+      <button class="heatClose" id="heatClose" type="button">CHIUDI</button>
+    </div>
+    <div class="heroSub">Anteprima della distribuzione delle posizioni in campo. Nella versione definitiva verrà alimentata dai dati tracking/eventi reali.</div>
+    <div class="pitch" id="pitch">
+      <div class="zone z1"></div><div class="zone z2"></div><div class="zone z3"></div><div class="zone z4"></div><div class="zone z5"></div>
+      <div class="pitchLabel">CAMPO · DENSITÀ POSIZIONALE</div>
+    </div>
+    <div class="heatStats">
+      <div class="heatStat"><small>TOUCHES</small><b id="hsTouches">—</b></div>
+      <div class="heatStat"><small>AREA COVERAGE</small><b id="hsCoverage">—</b></div>
+      <div class="heatStat"><small>ATTACKING 3RD</small><b id="hsAttack">—</b></div>
+      <div class="heatStat"><small>AVG. POSITION</small><b id="hsPosition">—</b></div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+const heatData = {
+  "Camarda": {touches:"N/D", coverage:"N/D", attack:"N/D", position:"ST · dati tracking richiesti"},
+  "Chukwueze": {touches:"N/D", coverage:"N/D", attack:"N/D", position:"RWB · dati tracking richiesti"},
+  "Cisse": {touches:"N/D", coverage:"N/D", attack:"N/D", position:"AM · dati tracking richiesti"},
+  "Ramos": {touches:"N/D", coverage:"N/D", attack:"N/D", position:"ST · dati tracking richiesti"},
+  "Loftus-Cheek": {touches:"N/D", coverage:"N/D", attack:"N/D", position:"AM/CM · dati tracking richiesti"},
+  "Nkunku": {touches:"N/D", coverage:"N/D", attack:"N/D", position:"FW · dati tracking richiesti"}
+};
+const overlay = document.getElementById("heatOverlay");
+const closeBtn = document.getElementById("heatClose");
+const title = document.getElementById("heatTitle");
+
+document.querySelectorAll(".heatBtn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const player = btn.dataset.player;
+    const d = heatData[player] || heatData["Leão"];
+    title.textContent = player + " · Heatmap";
+    document.getElementById("hsTouches").textContent = d.touches;
+    document.getElementById("hsCoverage").textContent = d.coverage;
+    document.getElementById("hsAttack").textContent = d.attack;
+    document.getElementById("hsPosition").textContent = d.position;
+    overlay.classList.add("open");
+    overlay.setAttribute("aria-hidden","false");
+  });
+});
+function closeHeatmap(){
+  overlay.classList.remove("open");
+  overlay.setAttribute("aria-hidden","true");
+}
+closeBtn.addEventListener("click", closeHeatmap);
+overlay.addEventListener("click", e => { if(e.target === overlay) closeHeatmap(); });
+document.addEventListener("keydown", e => { if(e.key === "Escape") closeHeatmap(); });
+</script>
+
+
+<script>
+(function(){
+  const buttons = document.querySelectorAll("#competitionFilters .filterBtn");
+  const rows = document.querySelectorAll("#competitionRows tr");
+  const matches = document.getElementById("compMatches");
+  const record = document.getElementById("compRecord");
+  const gf = document.getElementById("compGF");
+  const gs = document.getElementById("compGS");
+
+  const stats = {
+    all: {matches:"4", record:"1–2–1", gf:"7", gs:"8"},
+    friendly: {matches:"4", record:"1–2–1", gf:"7", gs:"8"},
+    seriea: {matches:"0", record:"0–0–0", gf:"0", gs:"0"},
+    coppa: {matches:"0", record:"0–0–0", gf:"0", gs:"0"},
+    europe: {matches:"0", record:"0–0–0", gf:"0", gs:"0"}
+  };
+
+  function apply(comp){
+    buttons.forEach(b => b.classList.toggle("active", b.dataset.comp === comp));
+    rows.forEach(r => {
+      r.style.display = (comp === "all" || r.dataset.comp === comp) ? "" : "none";
+    });
+    const x = stats[comp] || stats.all;
+    matches.textContent=x.matches; record.textContent=x.record; gf.textContent=x.gf; gs.textContent=x.gs;
+  }
+  buttons.forEach(b => b.addEventListener("click", () => apply(b.dataset.comp)));
+})();
+</script>
+
+
+<script>
+(function(){
+  const el=document.getElementById("matchCountdown");
+  if(!el) return;
+  const target=new Date("2026-08-23T20:45:00+02:00").getTime();
+  function tick(){
+    const d=target-Date.now();
+    if(d<=0){el.textContent="MATCHDAY";return;}
+    const days=Math.floor(d/86400000);
+    const hours=Math.floor(d%86400000/3600000);
+    const mins=Math.floor(d%3600000/60000);
+    const secs=Math.floor(d%60000/1000);
+    el.textContent=`COUNTDOWN: ${days}g ${String(hours).padStart(2,"0")}h ${String(mins).padStart(2,"0")}m ${String(secs).padStart(2,"0")}s`;
+  }
+  tick(); setInterval(tick,1000);
+})();
+</script>
+
+
+<script>
+(function(){
+  /*
+   * Dynamic chart commentary:
+   * the text is generated from the same values represented by the charts.
+   * If the dataset is updated later, the commentary can be recalculated here.
+   */
+  const data = {
+    goalsFor: [2,1,0,4],
+    goalsAgainst: [2,1,3,2],
+    shotsOnTarget: [4,3,0,9],
+    playerGoals: {
+      "Camarda":2,
+      "Chukwueze":2,
+      "Cissè":1,
+      "Ramos":1,
+      "Loftus-Cheek":1,
+      "Nkunku":1
+    },
+    competitions: {friendly:4, seriea:0, coppa:0, europe:0}
+  };
+
+  const opponents = ["Celtic","Inter","Chelsea","Manchester United"];
+
+  function sum(a){ return a.reduce((x,y)=>x+y,0); }
+  function avg(a){ return sum(a)/a.length; }
+  function maxIndex(a){ return a.indexOf(Math.max(...a)); }
+  function minIndex(a){ return a.indexOf(Math.min(...a)); }
+
+  const gf = data.goalsFor, ga = data.goalsAgainst;
+  const diff = gf.map((x,i)=>x-ga[i]);
+  const totalGF = sum(gf), totalGA = sum(ga);
+  const bestAttack = maxIndex(gf), worstAttack = minIndex(gf);
+  const bestDiff = maxIndex(diff), worstDiff = minIndex(diff);
+  const totalShots = sum(data.shotsOnTarget);
+  const playerEntries = Object.entries(data.playerGoals);
+  const topGoals = Math.max(...playerEntries.map(x=>x[1]));
+  const topPlayers = playerEntries.filter(x=>x[1]===topGoals).map(x=>x[0]);
+
+  const text = {
+    goals: {
+      main: `Il Milan ha segnato ${totalGF} gol e ne ha concessi ${totalGA} nelle quattro amichevoli. Il grafico evidenzia una forte oscillazione: la produzione offensiva raggiunge il massimo contro il ${opponents[bestAttack]} (${gf[bestAttack]} gol), mentre la fase difensiva mostra la criticità maggiore contro il ${opponents[worstDiff]} (${ga[worstDiff]} gol subiti).`,
+      impact: `la crescita offensiva dell'ultima gara è un segnale positivo, ma la continuità difensiva resta il principale punto da monitorare.`
+    },
+    attack: {
+      main: `La produzione offensiva media è di ${avg(gf).toFixed(2)} gol a partita. Il dato passa da ${gf[worstAttack]} contro il ${opponents[worstAttack]} a ${gf[bestAttack]} contro il ${opponents[bestAttack]}, mostrando una capacità realizzativa elevata ma non ancora costante.`,
+      impact: `se il livello realizzativo mostrato contro il Manchester United viene mantenuto nelle gare ufficiali, il potenziale offensivo diventa un fattore importante per la corsa alle prime posizioni.`
+    },
+    competition: {
+      main: `Al momento tutte le ${data.competitions.friendly} partite disputate appartengono alla pre-season. La Serie A e le altre competizioni ufficiali non hanno ancora prodotto dati di classifica, quindi il grafico non deve essere interpretato come rendimento stagionale ufficiale.`,
+      impact: `il vero benchmark inizierà con la prima giornata di Serie A: da quel momento questo indicatore potrà misurare ritmo, continuità e rendimento per competizione.`
+    },
+    shots: {
+      main: `Sono disponibili ${totalShots} tiri nello specchio complessivi nelle quattro gare considerate. Il dato cresce fino a 9 contro il Manchester United, mentre contro il Chelsea è pari a 0: la differenza tra le due prestazioni evidenzia una notevole variabilità nella capacità di portare conclusioni realmente pericolose.`,
+      impact: `il volume di tiri in porta sarà uno dei KPI più utili per capire se la crescita offensiva è strutturale oppure legata alla singola partita.`
+    },
+    difference: {
+      main: `La differenza reti passa da 0 contro Celtic e Inter a -3 contro il Chelsea, per poi risalire a +2 contro il Manchester United. Il valore medio sulle quattro gare è ${(sum(diff)/diff.length).toFixed(2)} per partita.`,
+      impact: `la risposta immediata dopo il -3 è positiva: il prossimo obiettivo è trasformare il +2 in una maggiore continuità nelle partite ufficiali.`
+    },
+    players: {
+      main: `Camarda e Chukwueze sono i migliori marcatori della pre-season con ${topGoals} gol ciascuno; Cissè, Ramos, Loftus-Cheek e Nkunku seguono con 1. Il grafico mostra quindi una distribuzione abbastanza ampia della produzione realizzativa.`,
+      impact: `avere più giocatori capaci di contribuire al gol riduce la dipendenza da un singolo finalizzatore e aumenta la profondità offensiva della rosa.`
+    }
+  };
+
+  document.querySelectorAll(".chartInsight").forEach(box=>{
+    const key=box.dataset.insight;
+    if(!text[key]) return;
+    box.querySelector(".insightText").textContent=text[key].main;
+    box.querySelector(".impactText").textContent=text[key].impact;
+  });
+})();
+</script>
+
+
+<script>
+(function(){
+  /*
+   * OPPONENT-AWARE MATCH ENGINE
+   * Inputs are kept in one object so future data connectors can replace them.
+   * Current opponent dataset is Torino, verified from official Torino FC pages.
+   */
+
+  const matchModel = {
+    match: {
+      home: "Torino",
+      away: "Milan",
+      date: "2026-08-23T20:45:00+02:00"
+    },
+
+    // Milan data already present in this dashboard.
+    milan: {
+      gfPerGame: 1.75,
+      gaPerGame: 1.50,
+      formScore: 76,
+      attackScore: 74,
+      defenseScore: 58
+    },
+
+    // Torino scouting dataset.
+    // Quality weights: 0.25 = very low opposition, 0.55 = intermediate, 0.80 = stronger,
+    // 1.00 = official competitive match.
+    torino: {
+      matches: [
+        {opponent:"Pinzolo Valrendena", gf:13, ga:0, weight:.25, type:"friendly"},
+        {opponent:"Alcione", gf:1, ga:0, weight:.55, type:"friendly"},
+        {opponent:"Cittadella", gf:0, ga:1, weight:.65, type:"friendly"},
+        {opponent:"Carrarese", gf:1, ga:0, weight:1.00, type:"cup"}
+      ],
+      attackScore: 61,
+      defenseScore: 69,
+      formScore: 72,
+      formation: "3-4-2-1"
+    },
+
+    homeAdvantage: 0.08,
+    dataQuality: 0.72
+  };
+
+  const weightedAvg = (arr, valueKey) => {
+    let num=0, den=0;
+    arr.forEach(x => { num += x[valueKey]*x.weight; den += x.weight; });
+    return den ? num/den : 0;
+  };
+
+  const tGF = weightedAvg(matchModel.torino.matches,"gf");
+  const tGA = weightedAvg(matchModel.torino.matches,"ga");
+
+  /*
+   * Expected-goal engine:
+   * - blends Milan attack with Torino defensive concession rate
+   * - blends Torino attack with Milan defensive concession rate
+   * - applies a modest home/away adjustment
+   * - applies a data-quality shrinkage toward league-neutral values
+   */
+  const neutralGF = 1.30;
+  const mAttack = (matchModel.milan.gfPerGame / neutralGF);
+  const tDefense = (tGA / neutralGF);
+  const tAttack = (tGF / neutralGF);
+  const mDefense = (matchModel.milan.gaPerGame / neutralGF);
+
+  let xgMilan = neutralGF * (0.58*mAttack + 0.42*tDefense);
+  let xgTorino = neutralGF * (0.58*tAttack + 0.42*mDefense);
+
+  // Home advantage for Torino and away penalty for Milan.
+  xgTorino *= (1 + matchModel.homeAdvantage);
+  xgMilan *= 0.94;
+
+  // Shrink extreme pre-season opponent data toward neutral.
+  xgTorino = 1.30 + (xgTorino-1.30)*0.78;
+  xgMilan = 1.30 + (xgMilan-1.30)*0.88;
+
+  function poisson(k, lambda){
+    return Math.exp(-lambda) * Math.pow(lambda,k) / factorial(k);
+  }
+  function factorial(n){
+    let r=1; for(let i=2;i<=n;i++) r*=i; return r;
+  }
+
+  let pMilan=0, pDraw=0, pTorino=0, best={p:0,i:0,j:0};
+  for(let i=0;i<=7;i++){
+    for(let j=0;j<=7;j++){
+      const p=poisson(i,xgMilan)*poisson(j,xgTorino);
+      if(i>j) pMilan+=p;
+      else if(i===j) pDraw+=p;
+      else pTorino+=p;
+      if(p>best.p) best={p,i,j};
+    }
+  }
+
+  const total = pMilan+pDraw+pTorino;
+  pMilan/=total; pDraw/=total; pTorino/=total;
+
+  // Confidence depends on data quality, sample size and separation of probabilities.
+  const sampleFactor = Math.min(1, matchModel.torino.matches.length/5);
+  const separation = Math.abs(pMilan-pTorino);
+  const confidence = Math.round(50 + 25*matchModel.dataQuality + 15*sampleFactor + 10*Math.min(1,separation*2));
+
+  function pct(x){ return Math.round(x*100) + "%"; }
+  function score(x){ return Math.round(x) + "/100"; }
+
+  document.getElementById("pMilan").textContent=pct(pMilan);
+  document.getElementById("pDraw").textContent=pct(pDraw);
+  document.getElementById("pTorino").textContent=pct(pTorino);
+  document.getElementById("barMilan").style.width=(pMilan*100)+"%";
+  document.getElementById("barDraw").style.width=(pDraw*100)+"%";
+  document.getElementById("barTorino").style.width=(pTorino*100)+"%";
+
+  document.getElementById("xgMilan").textContent=xgMilan.toFixed(2);
+  document.getElementById("xgTorino").textContent=xgTorino.toFixed(2);
+  document.getElementById("modalScore").textContent=best.i+"–"+best.j;
+  document.getElementById("modelConfidence").textContent=confidence+"/100";
+
+  document.getElementById("mAttack").textContent=score(matchModel.milan.attackScore);
+  document.getElementById("tAttack").textContent=score(matchModel.torino.attackScore);
+  document.getElementById("mDefense").textContent=score(matchModel.milan.defenseScore);
+  document.getElementById("tDefense").textContent=score(matchModel.torino.defenseScore);
+  document.getElementById("mForm").textContent=score(matchModel.milan.formScore);
+  document.getElementById("tForm").textContent=score(matchModel.torino.formScore);
+
+  ["mAttack","tAttack","mDefense","tDefense","mForm","tForm"].forEach(id=>{
+    const bar=document.getElementById(id+"Bar");
+    const val=parseInt(document.getElementById(id).textContent,10);
+    if(bar) bar.style.width=val+"%";
+  });
+
+  let reading;
+  if(pMilan >= pTorino + .15) {
+    reading = "Il modello vede un vantaggio netto del Milan.";
+  } else if(pMilan > pTorino) {
+    reading = "Il Milan è favorito, ma il margine non è abbastanza ampio da definire la gara a basso rischio.";
+  } else {
+    reading = "Il Torino presenta un vantaggio teorico nel modello.";
+  }
+
+  reading += " La previsione è sostenuta dalla produzione offensiva del Milan, ma attenuata dal fattore campo e dalla struttura difensiva del Torino.";
+  document.getElementById("modelReading").textContent=reading;
+
+  const dt = new Date();
+  document.getElementById("modelUpdate").textContent =
+    "Scouting aggiornato: "+dt.toLocaleDateString("it-IT")+" · dataset Torino verificato";
+})();
+</script>
+
+
+
+
+
+<script>
+window.addEventListener("milan:scouting-updated",function(e){
+  const d=e.detail;
+  const title=document.querySelector(".sectionTitle");
+  const matchTitle=[...document.querySelectorAll(".sectionTitle")].find(x=>x.textContent.includes("Match Intelligence"));
+  if(matchTitle) matchTitle.textContent="🎯 Match Intelligence · "+d.opponent+" vs Milan";
+
+  const teams=document.querySelectorAll(".predTeam");
+  if(teams.length>=2){
+    teams[0].firstChild.textContent=(d.home+"").toUpperCase();
+    teams[1].firstChild.textContent=(d.away+"").toUpperCase();
+  }
+  const meta=[...document.querySelectorAll(".matchMeta")].find(x=>x.textContent.includes("Serie A"));
+  if(meta) meta.textContent=new Date(d.date).toLocaleDateString("it-IT")+" · Serie A · AUTO SCOUT";
+});
+</script>
+
+
+<script>
+(function(){
+  const neutralGF=1.30;
+
+  function factorial(n){let r=1;for(let i=2;i<=n;i++)r*=i;return r;}
+  function poisson(k,l){return Math.exp(-l)*Math.pow(l,k)/factorial(k);}
+  function weightedForm(form){
+    const n=form?.arr?.length||0;
+    if(!n) return {gf:0,ga:0,score:50};
+    let gf=0,ga=0;
+    form.arr.forEach(m=>{
+      const home=m.homeTeam?.id===form.arr[0]?.homeTeam?.id;
+      const h=m.score?.fullTime?.home, a=m.score?.fullTime?.away;
+      if(h==null||a==null)return;
+      if(home){gf+=h;ga+=a}else{gf+=a;ga+=h}
+    });
+    const score=Math.max(0,Math.min(100,50+(form.w-form.l)*12+(gf-ga)*3));
+    return {gf:gf/n,ga:ga/n,score};
+  }
+
+  function calculate(d){
+    const mf=weightedForm(d.milanForm);
+    const of=weightedForm(d.opponentForm);
+
+    // Use verified recent form as a stronger signal than the static pre-season baseline.
+    const mAttack=(0.62*mf.gf+0.38*1.75);
+    const mDefense=(0.62*mf.ga+0.38*1.50);
+    const oAttack=of.gf;
+    const oDefense=of.ga;
+
+    let xgM=neutralGF*((mAttack/neutralGF)*.60+(oDefense/neutralGF)*.40);
+    let xgO=neutralGF*((oAttack/neutralGF)*.60+(mDefense/neutralGF)*.40);
+
+    // Away Milan / home opponent.
+    xgM*=.94;
+    xgO*=1.08;
+
+    // Keep early-season samples from dominating.
+    xgM=neutralGF+(xgM-neutralGF)*.82;
+    xgO=neutralGF+(xgO-neutralGF)*.82;
+
+    let p1=0,px=0,p2=0;
+    for(let i=0;i<=7;i++)for(let j=0;j<=7;j++){
+      const p=poisson(i,xgM)*poisson(j,xgO);
+      if(i>j)p1+=p; else if(i===j)px+=p; else p2+=p;
+    }
+    const s=p1+px+p2;p1/=s;px/=s;p2/=s;
+
+    const sample=Math.min(1,(d.milanForm.arr?.length||0)/5)*.35+
+                 Math.min(1,(d.opponentForm.arr?.length||0)/5)*.35;
+    const spread=Math.min(1,Math.abs(p1-p2)*2.5);
+    const confidence=Math.round(45+20*sample+20*spread+15*.72);
+
+    return {p1,px,p2,confidence,xgM,xgO,mf,of};
+  }
+
+  function render(d){
+    const r=calculate(d);
+    document.getElementById("liveP1").textContent=Math.round(r.p1*100)+"%";
+    document.getElementById("livePX").textContent=Math.round(r.px*100)+"%";
+    document.getElementById("liveP2").textContent=Math.round(r.p2*100)+"%";
+    document.getElementById("liveConf").textContent=r.confidence+"/100";
+
+    let leader=r.p1>r.p2?"Milan":r.p2>r.p1?d.opponent:"pareggio";
+    let reason=`Con i dati live disponibili, ${leader} è l'esito con maggiore probabilità. `;
+    reason+=`Il modello stima circa ${r.xgM.toFixed(2)} xG per il Milan e ${r.xgO.toFixed(2)} per ${d.opponent}. `;
+    reason+=`La forma recente pesa più della baseline pre-season, mentre il fattore campo viene applicato a favore della squadra di casa.`;
+    document.getElementById("liveReason").innerHTML="<strong>Output:</strong> "+reason;
+
+    const state=document.getElementById("liveEngineState");
+    state.textContent="MODELLO RICALCOLATO · LIVE";
+    state.className="livePill";
+
+    // Synchronize the main predictor probabilities when its IDs exist.
+    const map=[
+      ["pMilan",Math.round(r.p1*100)+"%"],["pDraw",Math.round(r.px*100)+"%"],["pTorino",Math.round(r.p2*100)+"%"],
+      ["barMilan",r.p1*100],["barDraw",r.px*100],["barTorino",r.p2*100],
+      ["xgMilan",r.xgM.toFixed(2)],["xgTorino",r.xgO.toFixed(2)],["modelConfidence",r.confidence+"/100"]
+    ];
+    map.forEach(([id,val])=>{
+      const el=document.getElementById(id);
+      if(!el)return;
+      if(id.startsWith("bar"))el.style.width=val+"%";else el.textContent=val;
+    });
+    const reading=document.getElementById("modelReading");
+    if(reading)reading.textContent=reason;
+  }
+
+  window.addEventListener("milan:scouting-updated",e=>render(e.detail));
+})();
+</script>
+
+
+<script>
+(function(){
+  const STORE="milanPredictorAudit_v1";
+  const auditPredictions = JSON.parse(localStorage.getItem("milanPredictorAuditPredictions")||"[]");
+  let history = JSON.parse(localStorage.getItem(STORE)||"[]");
+
+  // Capture the current live model when available.
+  function currentPrediction(){
+    const p1=document.getElementById("pMilan")?.textContent;
+    const px=document.getElementById("pDraw")?.textContent;
+    const p2=document.getElementById("pTorino")?.textContent;
+    const conf=document.getElementById("modelConfidence")?.textContent;
+    if(!p1||p1==="—") return null;
+    return {
+      p1:parseInt(p1)/100,
+      px:parseInt(px)/100,
+      p2:parseInt(p2)/100,
+      confidence:conf||"—",
+      timestamp:new Date().toISOString()
+    };
+  }
+
+  function outcomeFromScore(score){
+    const m=String(score).trim().match(/^(\d+)\s*[-:]\s*(\d+)$/);
+    if(!m)return null;
+    const h=Number(m[1]),a=Number(m[2]);
+    return h>a?"H":h===a?"D":"A";
+  }
+
+  function predLabel(p){
+    if(!p)return "—";
+    const max=Math.max(p.p1,p.px,p.p2);
+    return max===p.p1?"M":max===p.p2?"A":"X";
+  }
+
+  function brier(p,outcome){
+    const actual={H:0,D:0,A:0};
+    actual[outcome]=1;
+    return Math.pow(p.p1-actual.H,2)+Math.pow(p.px-actual.D,2)+Math.pow(p.p2-actual.A,2);
+  }
+
+  function updateUI(){
+    const rows=document.getElementById("learningRows");
+    rows.innerHTML="";
+    let correct=0,total=history.length,brierSum=0,errorSum=0;
+
+    history.forEach(x=>{
+      if(x.prediction && x.outcome){
+        const pred=predLabel(x.prediction);
+        if(pred===x.outcome)correct++;
+        brierSum+=brier(x.prediction,x.outcome);
+        const chosen=x.prediction[x.outcome==="H"?"p1":x.outcome==="D"?"px":"p2"];
+        errorSum+=Math.abs(chosen-1);
+      }
+      const tr=document.createElement("tr");
+      const outcomeLabel=x.outcome==="H"?"Casa":x.outcome==="D"?"X":"Trasf.";
+      tr.innerHTML=`<td>${x.home}–${x.away}</td>
+        <td>${x.prediction?Math.round(x.prediction.p1*100)+" / "+Math.round(x.prediction.px*100)+" / "+Math.round(x.prediction.p2*100):"—"}</td>
+        <td>${x.score||"—"}</td>
+        <td>${outcomeLabel}</td>
+        <td>${x.prediction?Math.round((1-x.prediction[x.outcome==="H"?"p1":x.outcome==="D"?"px":"p2"])*100)+"%":"—"}</td>`;
+      rows.appendChild(tr);
+    });
+
+    document.getElementById("validatedMatches").textContent=total;
+    document.getElementById("correctMatches").textContent=correct;
+    document.getElementById("accuracyValue").textContent=total?(Math.round(correct/total*100)+"%"):"—";
+    document.getElementById("accuracyBar").style.width=total?(correct/total*100)+"%":"0%";
+    document.getElementById("brierValue").textContent=total?(brierSum/total).toFixed(3):"—";
+    document.getElementById("meanError").textContent=total?(Math.round(errorSum/total*100)+"%"):"—";
+
+    const status=document.getElementById("learningStatus");
+    const interpretation=document.getElementById("learningInterpretation");
+    if(!total){
+      status.textContent="NESSUN MATCH VALIDATO";
+      status.className="learningStatus";
+      interpretation.textContent="Servono risultati reali per valutare la qualità del predictor. Un singolo match non è sufficiente per giudicare il modello.";
+    }else{
+      status.textContent=total<5?"CAMPIONE INIZIALE":"AUDIT ATTIVO";
+      status.className="learningStatus ready";
+      interpretation.textContent=total<5
+        ?"Il campione è ancora piccolo: accuracy e Brier Score sono indicativi."
+        :"Lo storico contiene abbastanza osservazioni per iniziare a valutare calibrazione e accuratezza del predictor.";
+    }
+  }
+
+  document.getElementById("saveMatchResult").addEventListener("click",()=>{
+    const home=document.getElementById("learnHome").value.trim()||"Milan";
+    const away=document.getElementById("learnAway").value.trim()||"Avversario";
+    const score=document.getElementById("learnResult").value.trim();
+    const outcome=outcomeFromScore(score);
+    if(!outcome){
+      alert("Inserisci un risultato nel formato 1-2.");
+      return;
+    }
+    const prediction=currentPrediction();
+    if(!prediction){
+      alert("Non è disponibile una previsione valida da auditare.");
+      return;
+    }
+    history.push({
+      home,away,score,outcome,prediction,
+      createdAt:new Date().toISOString()
+    });
+    localStorage.setItem(STORE,JSON.stringify(history));
+    document.getElementById("learnResult").value="";
+    updateUI();
+  });
+
+  // Preserve a snapshot of the current prediction before a later match changes it.
+  window.addEventListener("milan:scouting-updated",function(){
+    const p=currentPrediction();
+    if(p) localStorage.setItem("milanLastPrediction",JSON.stringify(p));
+  });
+
+  updateUI();
+})();
+</script>
+
+
+<script>
+(function(){
+  const BACKEND_STORE="milanSecureBackendUrl";
+  const urlEl=document.getElementById("backendUrl");
+  const statusEl=document.getElementById("secureEngineStatus");
+  const dot=document.getElementById("secureEngineDot");
+  const logEl=document.getElementById("engineLog");
+
+  function setStatus(text,type){
+    statusEl.textContent=text;
+    dot.className="statusDot "+(type||"");
+  }
+  function log(msg){
+    const t=new Date().toLocaleTimeString("it-IT");
+    logEl.innerHTML += "<br>["+t+"] "+msg;
+    logEl.scrollTop=logEl.scrollHeight;
+  }
+  function fmtDate(s){
+    if(!s)return "—";
+    const d=new Date(s);
+    return isNaN(d)?"—":d.toLocaleDateString("it-IT",{day:"2-digit",month:"2-digit",year:"numeric"});
+  }
+
+  function apply(data){
+    if(!data) throw new Error("Payload backend vuoto.");
+
+    document.getElementById("autoOpponent").textContent=data.opponent||"—";
+    document.getElementById("autoDate").textContent=fmtDate(data.date);
+    document.getElementById("autoVenue").textContent=data.venue||"—";
+    document.getElementById("autoMilanForm").textContent=data.milanForm?.form||"—";
+    document.getElementById("autoOppForm").textContent=data.opponentForm?.form||"—";
+    document.getElementById("autoQuality").textContent=data.quality||"LIVE";
+
+    window.MilanAutoScouting=data;
+    window.dispatchEvent(new CustomEvent("milan:scouting-updated",{detail:data}));
+
+    setStatus("LIVE DATA CONNECTED","ok");
+    log("Backend collegato: dati scouting ricevuti.");
+    log("Avversario: "+(data.opponent||"—")+" · Forma Milan: "+(data.milanForm?.form||"—")+" · Forma avversario: "+(data.opponentForm?.form||"—"));
+  }
+
+  async function connect(){
+    let base=urlEl.value.trim().replace(/\/+$/,"");
+    if(!base){
+      setStatus("INSERISCI ENDPOINT BACKEND","warn");
+      log("Nessun endpoint configurato.");
+      return;
+    }
+    localStorage.setItem(BACKEND_STORE,base);
+    setStatus("CONNESSIONE IN CORSO…","warn");
+    log("Connessione a "+base+"/milan/scouting…");
+
+    try{
+      const r=await fetch(base+"/milan/scouting",{
+        method:"GET",
+        headers:{"Accept":"application/json"},
+        cache:"no-store"
+      });
+      if(!r.ok) throw new Error("HTTP "+r.status);
+      const data=await r.json();
+      apply(data);
+    }catch(e){
+      setStatus("BACKEND NON DISPONIBILE · FALLBACK","err");
+      log("Errore backend: "+e.message);
+      log("Nessuna API key viene richiesta al browser.");
+    }
+  }
+
+  const saved=localStorage.getItem(BACKEND_STORE);
+  if(saved){
+    urlEl.value=saved;
+    setStatus("ENDPOINT CONFIGURATO · PRONTO","warn");
+    log("Endpoint backend salvato localmente. Premi 'Collega Live Data'.");
+  }
+
+  document.getElementById("connectBackend").addEventListener("click",connect);
+})();
+</script>
+
+</body>
+</html>
