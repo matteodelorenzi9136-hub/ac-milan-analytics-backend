@@ -2,12 +2,13 @@
   "name": "ac-milan-analytics-backend",
   "version": "1.0.0",
   "private": true,
-  "description": "Secure backend for AC Milan Analytics Dashboard",
+  "description": "Secure backend/proxy for the AC Milan Analytics Dashboard",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "engines": {
     "node": ">=18"
-  }
+  },
+  "dependencies": {}
 }
