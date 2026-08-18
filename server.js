@@ -195,3 +195,75 @@ async function scouting() {
 
   const milan = isMilan(upcoming.homeTeam)
     ? upcoming.homeTeam
+  : upcoming.awayTeam;
+
+  const opponent = isMilan(upcoming.homeTeam)
+    ? upcoming.awayTeam
+    : upcoming.homeTeam;
+
+  const milanForm = summarize(matches, upcoming.homeTeam.id === milan.id ? milan.id : milan.id);
+  const opponentForm = summarize(matches, opponent.id);
+
+  return {
+    provider: "football-data.org",
+    updatedAt: new Date().toISOString(),
+
+    opponent: opponent.name,
+    opponentId: opponent.id,
+
+    date: upcoming.utcDate,
+
+    venue: upcoming.venue || "-",
+
+    home: upcoming.homeTeam.name,
+    away: upcoming.awayTeam.name,
+
+    competition: upcoming.competition.name,
+
+    milanForm,
+    opponentForm
+  };
+}
+
+async function handleRequest(req, res) {
+  try {
+    const url = new URL(req.url, `http://${req.headers.host}`);
+
+    if (url.pathname === "/health") {
+      return send(res, 200, {
+        ok: true,
+        provider: "football-data.org",
+        apiKeyConfigured: Boolean(TOKEN),
+        timestamp: new Date().toISOString()
+      });
+    }
+
+    if (
+      url.pathname === "/api/milan/scouting" ||
+      url.pathname === "/milan/scouting"
+    ) {
+      return send(res, 200, await scouting());
+    }
+
+    return send(res, 404, {
+      error: "Not found"
+    });
+
+  } catch (err) {
+    console.error(err);
+
+    return send(res, 502, {
+      error: "Live data unavailable",
+      message: err.message,
+      fallback: "Use the last verified local dataset in the dashboard."
+    });
+  }
+}
+
+const server = http.createServer(handleRequest);
+
+server.listen(PORT, "0.0.0.0", () => {
+  console.log(
+    `AC Milan Analytics backend listening on port ${PORT}`
+  );
+});
